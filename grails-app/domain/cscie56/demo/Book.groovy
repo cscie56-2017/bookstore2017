@@ -19,9 +19,14 @@ class Book {
 
     static constraints = {
         isbn unique: true
+        dateOfPublication validator: {val, obj, errors ->
+            if (val < obj.author.birthDate) {
+                errors.rejectValue('dateOfPublication','pubDateBeforeBirthdate')
+            }
+        }
     }
 
     String toString(){
-        "$title (${dateOfPublication.format('yyyy')})"
+        "$title (${dateOfPublication?.format('yyyy')})"
     }
 }
