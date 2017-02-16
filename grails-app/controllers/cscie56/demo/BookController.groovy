@@ -10,11 +10,15 @@ class BookController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Book.list(params), model:[bookCount: Book.count()]
+        respond Book.listOrderByDateOfPublication(params), model:[bookCount: Book.count()]
     }
 
     def show(Book book) {
         respond book
+    }
+
+    def findBooksByYear(Integer year) {
+        render view:'index', model:[bookList:Book.findAllBooksByPublicationYear(year).list()]
     }
 
     def create() {
