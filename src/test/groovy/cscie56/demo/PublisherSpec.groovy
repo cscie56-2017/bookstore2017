@@ -34,4 +34,18 @@ class PublisherSpec extends Specification {
         'a '    | new Date() -1     | 'Ha'      | false
 
     }
+
+    @Unroll
+    void "test String representations: for #name: #result; #resultLong" () {
+        when:
+            Publisher p = new Publisher(name:name,dateEstablished:date,type:"Trade")
+
+        then:
+            result == p.toString()
+            resultLong == p.toStringLong()
+
+        where:
+        name    | date          | result | resultLong
+        "name"  | new Date()    | "name" | "name, established ${new Date().format("yyyy")}"
+    }
 }

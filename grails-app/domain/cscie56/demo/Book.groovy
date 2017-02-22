@@ -6,7 +6,7 @@ class Book {
     Date dateOfPublication
     String isbn
 
-    static belongsTo = [author:Author]
+    static belongsTo = [author:Author, publisher:Publisher]
 
     static namedQueries = {
         findAllBooksByPublicationYear { Integer year ->

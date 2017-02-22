@@ -1,18 +1,15 @@
 package cscie56.demo
 
 import grails.test.mixin.*
-import org.apache.http.HttpStatus
 import spock.lang.*
 
-import static org.springframework.http.HttpStatus.NOT_FOUND
-
-@TestFor(BookController)
-@Mock(Book)
-class BookControllerSpec extends Specification {
+@TestFor(PublisherController)
+@Mock(Publisher)
+class PublisherControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", author: new Author(), publisher: new Publisher()]
+        params << [name:"name",dateEstablished:new Date()-1, type:"Trade"]
     }
 
     void "Test the index action returns the correct model"() {
@@ -21,8 +18,8 @@ class BookControllerSpec extends Specification {
             controller.index()
 
         then:"The model is correct"
-            !model.bookList
-            model.bookCount == 0
+            !model.publisherList
+            model.publisherCount == 0
     }
 
     void "Test the create action returns the correct model"() {
@@ -30,15 +27,7 @@ class BookControllerSpec extends Specification {
             controller.create()
 
         then:"The model is correctly created"
-            model.book!= null
-    }
-
-    void "Test that saving null fails" () {
-        when:"The save action is executed with null"
-            request.method = 'POST'
-            controller.save(null)
-        then:
-            response.status == 404
+            model.publisher!= null
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -46,25 +35,25 @@ class BookControllerSpec extends Specification {
         when:"The save action is executed with an invalid instance"
             request.contentType = FORM_CONTENT_TYPE
             request.method = 'POST'
-            def book = new Book()
-            book.validate()
-            controller.save(book)
+            def publisher = new Publisher()
+            publisher.validate()
+            controller.save(publisher)
 
         then:"The create view is rendered again with the correct model"
-            model.book!= null
+            model.publisher!= null
             view == 'create'
 
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            book = new Book(params)
+            publisher = new Publisher(params)
 
-            controller.save(book)
+            controller.save(publisher)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/book/show/1'
+            response.redirectedUrl == '/publisher/show/1'
             controller.flash.message != null
-            Book.count() == 1
+            Publisher.count() == 1
     }
 
     void "Test that the show action returns the correct model"() {
@@ -76,24 +65,11 @@ class BookControllerSpec extends Specification {
 
         when:"A domain instance is passed to the show action"
             populateValidParams(params)
-            def book = new Book(params)
-            controller.show(book)
+            def publisher = new Publisher(params)
+            controller.show(publisher)
 
         then:"A model is populated containing the domain instance"
-            model.book == book
-    }
-
-    void "Test that the findBooksByYear returns only the anticipated results" () {
-        when:
-            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", author: new Author(), publisher: new Publisher())
-            b1.save(flush:true)
-            Book b2 = new Book(title:'title',dateOfPublication: new Date() -365, isbn: "1234567891", author: new Author(), publisher: new Publisher())
-            b2.save()
-            controller.findBooksByYear(2017)
-        then:
-            model.bookList != null
-            model.bookList.size() == 1
-
+            model.publisher == publisher
     }
 
     void "Test that the edit action returns the correct model"() {
@@ -105,11 +81,11 @@ class BookControllerSpec extends Specification {
 
         when:"A domain instance is passed to the edit action"
             populateValidParams(params)
-            def book = new Book(params)
-            controller.edit(book)
+            def publisher = new Publisher(params)
+            controller.edit(publisher)
 
         then:"A model is populated containing the domain instance"
-            model.book == book
+            model.publisher == publisher
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -119,28 +95,28 @@ class BookControllerSpec extends Specification {
             controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/book/index'
+            response.redirectedUrl == '/publisher/index'
             flash.message != null
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def book = new Book()
-            book.validate()
-            controller.update(book)
+            def publisher = new Publisher()
+            publisher.validate()
+            controller.update(publisher)
 
         then:"The edit view is rendered again with the invalid instance"
             view == 'edit'
-            model.book == book
+            model.publisher == publisher
 
         when:"A valid domain instance is passed to the update action"
             response.reset()
             populateValidParams(params)
-            book = new Book(params).save(flush: true)
-            controller.update(book)
+            publisher = new Publisher(params).save(flush: true)
+            controller.update(publisher)
 
         then:"A redirect is issued to the show action"
-            book != null
-            response.redirectedUrl == "/book/show/$book.id"
+            publisher != null
+            response.redirectedUrl == "/publisher/show/$publisher.id"
             flash.message != null
     }
 
@@ -151,23 +127,23 @@ class BookControllerSpec extends Specification {
             controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/book/index'
+            response.redirectedUrl == '/publisher/index'
             flash.message != null
 
         when:"A domain instance is created"
             response.reset()
             populateValidParams(params)
-            def book = new Book(params).save(flush: true)
+            def publisher = new Publisher(params).save(flush: true)
 
         then:"It exists"
-            Book.count() == 1
+            Publisher.count() == 1
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(book)
+            controller.delete(publisher)
 
         then:"The instance is deleted"
-            Book.count() == 0
-            response.redirectedUrl == '/book/index'
+            Publisher.count() == 0
+            response.redirectedUrl == '/publisher/index'
             flash.message != null
     }
 }
