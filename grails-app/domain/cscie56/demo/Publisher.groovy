@@ -6,7 +6,7 @@ class Publisher {
     Date dateEstablished
     String type
 
-    static hasMany = [book:Book]
+    static hasMany = [books:Book]
 
     static constraints = {
         dateEstablished max: new Date()

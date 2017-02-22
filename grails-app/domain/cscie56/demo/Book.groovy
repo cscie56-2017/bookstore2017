@@ -20,7 +20,7 @@ class Book {
     static constraints = {
         isbn unique: true
         dateOfPublication validator: {val, obj, errors ->
-            if (val < obj.author.birthDate) {
+            if (val < obj?.author?.birthDate) {
                 errors.rejectValue('dateOfPublication','pubDateBeforeBirthdate')
             }
         }
