@@ -25,15 +25,14 @@
                 </g:eachError>
             </ul>
             </g:hasErrors>
-            <g:form action="save">
+            <g:form action="saveEverythingCommand">
                 <fieldset class="form">
-                    <f:all bean="book"/>
+                    <g:render template="createEverythingForm" model="[cmd:cmd]" />
                 </fieldset>
                 <fieldset class="buttons">
                     <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
                 </fieldset>
             </g:form>
         </div>
-        <bookstore:copyright to="2017" by="Bob Smith" />
     </body>
 </html>

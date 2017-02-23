@@ -59,6 +59,15 @@ class BookController {
         [ cmd: cmd ]
     }
 
+    def createEverythingCommand() {
+        CreateEverythingCommand cmd = new CreateEverythingCommand(
+                bookInstance:new Book(),
+                authorInstance: new Author(),
+                publisherInstance: new Publisher())
+
+        [ cmd: cmd ]
+    }
+
     def saveEverything(Book bookInstance, Author authorInstance, Publisher publisherInstance) {
         if (bookInstance == null || authorInstance == null || publisherInstance == null) {
             notFound()
@@ -98,6 +107,44 @@ class BookController {
             }
             '*' { respond new CreateEverythingCommand(bookInstance:bookInstance, authorInstance: authorInstance,publisherInstance: publisherInstance), [view: 'showEverything', status: CREATED] }
         }
+    }
+
+    def saveEverythingCommand(CreateEverythingCommand cmd) {
+
+        if (cmd.bookInstance == null || cmd.authorInstance == null || cmd.publisherInstance == null) {
+            notFound()
+            return
+        }
+
+        if (!cmd.authorInstance.save (flush:true) ){
+            cmd.authorInstance.errors.allErrors.each {println it }
+        }
+
+        if(!cmd.publisherInstance.save (flush:true) ){
+            cmd.publisherInstance.errors.allErrors.each { println it }
+        }
+
+        cmd.bookInstance.author = cmd.authorInstance
+        cmd.bookInstance.publisher = cmd.publisherInstance
+        cmd.bookInstance.clearErrors() //book has already been validated bc it is used as a command object, so need to clear errors before re-validating
+        cmd.bookInstance.validate()
+
+        if (cmd.bookInstance.hasErrors()) {
+            def errors = cmd.bookInstance.errors
+            render view:'createEverything',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
+            return
+        }
+
+        cmd.authorInstance.save flush:true
+        cmd.publisherInstance.save flush:true
+        cmd.bookInstance.save flush:true
+
+        request.withFormat {
+            form multipartForm {
+                flash.message = message(code: 'everything.created.message', args: [cmd.bookInstance.title, cmd.authorInstance.fullName, cmd.publisherInstance.name, cmd.bookInstance.dateOfPublication.format('MM/dd/yyyy')])
+                redirect cmd.bookInstance
+            }
+            '*' { respond cmd.bookInstance, [status: CREATED] }        }
     }
 
     def edit(Book book) {
