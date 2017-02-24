@@ -5,8 +5,10 @@ class Book {
     String title
     Date dateOfPublication
     String isbn
+    Integer price //stored as an integer, to make the math easier; will need to be formatted properly
 
-    static belongsTo = [author:Author, publisher:Publisher]
+    static belongsTo = [authors:Author, publisher:Publisher]
+    static hasMany = [authors: Author]
 
     static namedQueries = {
         findAllBooksByPublicationYear { Integer year ->
@@ -20,10 +22,13 @@ class Book {
     static constraints = {
         isbn unique: true
         dateOfPublication validator: {val, obj, errors ->
-            if (val < obj?.author?.birthDate) {
-                errors.rejectValue('dateOfPublication','pubDateBeforeBirthdate')
+            obj?.authors?.each { author ->
+                if (val < author?.birthDate) {
+                    errors.rejectValue('dateOfPublication','pubDateBeforeBirthdate')
+                }
             }
         }
+        price min:0
     }
 
     String toString(){

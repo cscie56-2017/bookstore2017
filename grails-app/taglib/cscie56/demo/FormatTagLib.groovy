@@ -1,5 +1,8 @@
 package cscie56.demo
 
+import java.text.DecimalFormat
+import java.text.NumberFormat
+
 class FormatTagLib {
     //static defaultEncodeAs = [taglib:'html']
     //static encodeAsForTags = [tagName: [taglib:'html'], otherTagName: [taglib:'none']]
@@ -17,6 +20,15 @@ class FormatTagLib {
         } else {
             out << "<p>Copyright &copy; ${attrs.to} ${by}</p>"//x.encodeAsRaw()
         }
+
+    }
+
+    /**
+     * @attr val REQUIRED
+     */
+    def showPrice = { attrs ->
+        def amount = Integer.valueOf(attrs.val)
+        out << "\$${(int)(amount/100)}.${new DecimalFormat("00").format(amount%100)}"
 
     }
 }

@@ -12,7 +12,7 @@ class BookControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", author: new Author(), publisher: new Publisher()]
+        params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0]
     }
 
     void "Test the index action returns the correct model"() {
@@ -85,9 +85,9 @@ class BookControllerSpec extends Specification {
 
     void "Test that the findBooksByYear returns only the anticipated results" () {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", author: new Author(), publisher: new Publisher())
+            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:0)
             b1.save(flush:true)
-            Book b2 = new Book(title:'title',dateOfPublication: new Date() -365, isbn: "1234567891", author: new Author(), publisher: new Publisher())
+            Book b2 = new Book(title:'title',dateOfPublication: new Date() -365, isbn: "1234567891", authors: [new Author()], publisher: new Publisher(),price:0)
             b2.save()
             controller.findBooksByYear(2017)
         then:

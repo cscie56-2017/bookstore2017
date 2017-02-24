@@ -1,5 +1,8 @@
 package cscie56.demo
 
+import grails.converters.JSON
+import grails.converters.XML
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -19,6 +22,7 @@ class BookController {
 
     def findBooksByYear(Integer year) {
         render view:'index', model:[bookList:Book.findAllBooksByPublicationYear(year).list()]
+        //render Book.findAllBooksByPublicationYear(year).list() as XML
     }
 
     def create() {
@@ -82,7 +86,7 @@ class BookController {
             publisherInstance.errors.allErrors.each { println it }
         }
 
-        bookInstance.author = authorInstance
+        bookInstance.authors = [authorInstance]
         bookInstance.publisher = publisherInstance
         bookInstance.clearErrors() //book has already been validated bc it is used as a command object, so need to clear errors before re-validating
         bookInstance.validate()
@@ -124,7 +128,8 @@ class BookController {
             cmd.publisherInstance.errors.allErrors.each { println it }
         }
 
-        cmd.bookInstance.author = cmd.authorInstance
+        cmd.bookInstance.authors = [cmd.authorInstance]
+        cmd.authorInstance.addToBooks(cmd.bookInstance)
         cmd.bookInstance.publisher = cmd.publisherInstance
         cmd.bookInstance.clearErrors() //book has already been validated bc it is used as a command object, so need to clear errors before re-validating
         cmd.bookInstance.validate()

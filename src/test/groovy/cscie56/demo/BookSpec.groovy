@@ -24,7 +24,7 @@ class BookSpec extends Specification {
             !b1.validate()
 
         when:
-            b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", author: new Author(), publisher: new Publisher())
+            b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0)
 
         then:
             b1.validate()
@@ -32,9 +32,9 @@ class BookSpec extends Specification {
 
     void "test isbn is unique"() {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", author: new Author(), publisher: new Publisher())
+            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0)
             b1.save(flush:true)
-            Book b2 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", author: new Author(), publisher: new Publisher())
+            Book b2 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0)
             b2.save()
 
         then:
@@ -46,7 +46,7 @@ class BookSpec extends Specification {
     void "test publication date not before author birthdate" () {
         when:
             Author a = new Author(firstName: 'Stephen', lastName: 'King', birthDate: Date.parse("MM/dd/yyyy","9/21/1947"))
-            Book b = new Book(title:title,dateOfPublication: Date.parse("MM/dd/yyyy",dateString), author:a, isbn:isbn, publisher: new Publisher())
+            Book b = new Book(title:title,dateOfPublication: Date.parse("MM/dd/yyyy",dateString), authors: [a], isbn:isbn, publisher: new Publisher(), price:0)
 
         then:
             b.validate() == result

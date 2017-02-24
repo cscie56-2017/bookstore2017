@@ -20,7 +20,7 @@ class AuthorSpec extends Specification {
     void "test create Author with books"() {
         when:
             Author a = new Author(firstName: 'Stephen',lastName: 'King',birthDate: new Date())
-            Book b = new Book(title: 'book',dateOfPublication: new Date(), isbn: '1239088',author: a)
+            Book b = new Book(title: 'book',dateOfPublication: new Date(), isbn: '1239088',authors: [a],price:1999,publisher: new Publisher())
             a.books = [] << b
         then:
             a.validate()
