@@ -18,7 +18,7 @@
             <g:if test="${flash.message}">
                 <div class="message" role="status">${flash.message}</div>
             </g:if>
-            <f:table collection="${bookList}" />
+            <f:table collection="${bookList}" properties="['title','authors','publisher','dateOfPublication','isbn','priceFormatted']"/>
 
             <div class="pagination">
                 <g:paginate total="${bookCount ?: 0}" />
