@@ -9,6 +9,8 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class BookController {
 
+    BookService bookService
+
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
@@ -37,6 +39,9 @@ class BookController {
             return
         }
 
+        // set price if missing, before checking for errors
+        bookService.setPriceByGenre(book)
+
         if (book.hasErrors()) {
             transactionStatus.setRollbackOnly()
             respond book.errors, view:'create'
@@ -47,7 +52,7 @@ class BookController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Book'), book.id])
+                flash.message = message( code: 'book.created.message', args: [book.title, book.authors*.fullName, book.publisher.name, book.dateOfPublication])
                 redirect book
             }
             '*' { respond book, [status: CREATED] }
@@ -86,8 +91,8 @@ class BookController {
         cmd.bookInstance.addToAuthors( cmd.authorInstance )
         cmd.authorInstance.addToBooks(cmd.bookInstance)
         cmd.bookInstance.publisher = cmd.publisherInstance
-        cmd.bookInstance.clearErrors() //book has already been validated bc it is used as a command object, so need to clear errors before re-validating
-        cmd.bookInstance.validate()
+        // set price if missing, before checking for errors
+        bookService.setPriceByGenre(cmd.bookInstance)
 
         if (cmd.bookInstance.hasErrors()) {
             def errors = cmd.bookInstance.errors
@@ -101,7 +106,7 @@ class BookController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'everything.created.message', args: [cmd.bookInstance.title, cmd.authorInstance.fullName, cmd.publisherInstance.name, cmd.bookInstance.dateOfPublication.format('MM/dd/yyyy')])
+                flash.message = message(code: 'everything.created.message', args: [cmd.bookInstance.title, cmd.authorInstance.fullName, cmd.publisherInstance.name, cmd.bookInstance.dateOfPublication.format('M/d/yyyy')])
                 redirect cmd.bookInstance
             }
             '*' { respond cmd.bookInstance, [status: CREATED] }        }

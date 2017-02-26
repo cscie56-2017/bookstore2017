@@ -39,7 +39,7 @@ class AuthorController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'author.label', default: 'Author'), author.id])
+                flash.message = message(code: 'author.created.message', args: [author.fullName, author.birthDate])
                 redirect author
             }
             '*' { respond author, [status: CREATED] }

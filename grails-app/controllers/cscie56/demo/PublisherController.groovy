@@ -39,7 +39,7 @@ class PublisherController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'publisher.label', default: 'Publisher'), publisher.id])
+                flash.message = message(code: 'publisher.created.message', args: [publisher.name, publisher.dateEstablished.format('yyyy')])
                 redirect publisher
             }
             '*' { respond publisher, [status: CREATED] }
