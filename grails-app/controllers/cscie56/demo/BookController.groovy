@@ -54,63 +54,12 @@ class BookController {
         }
     }
 
-    def showEverything(CreateEverythingCommand cmd) {
-        [ cmd: cmd ]
-    }
-
-    def createEverything() {
-        CreateEverythingCommand cmd = new CreateEverythingCommand(bookInstance:new Book(), authorInstance: new Author(), publisherInstance: new Publisher())
-        [ cmd: cmd ]
-    }
-
     def createEverythingCommand() {
-        CreateEverythingCommand cmd = new CreateEverythingCommand(
+        def cmd = new CreateEverythingCommand(
                 bookInstance:new Book(),
                 authorInstance: new Author(),
                 publisherInstance: new Publisher())
-
-        [ cmd: cmd ]
-    }
-
-    def saveEverything(Book bookInstance, Author authorInstance, Publisher publisherInstance) {
-        if (bookInstance == null || authorInstance == null || publisherInstance == null) {
-            notFound()
-            return
-        }
-
-        if (!authorInstance.save (flush:true) ){
-            authorInstance.errors.allErrors.each {println it }
-        }
-
-        if(!publisherInstance.save (flush:true) ){
-            publisherInstance.errors.allErrors.each { println it }
-        }
-
-        bookInstance.authors = [authorInstance]
-        bookInstance.publisher = publisherInstance
-        bookInstance.clearErrors() //book has already been validated bc it is used as a command object, so need to clear errors before re-validating
-        bookInstance.validate()
-
-        if (bookInstance.hasErrors() || authorInstance.hasErrors() || publisherInstance.hasErrors()) {
-            def errors
-            if (bookInstance.hasErrors()) {
-                errors = bookInstance.errors
-            }
-            render view:'createEverything',model:[cmd:new CreateEverythingCommand(bookInstance:bookInstance, authorInstance:authorInstance,publisherInstance: publisherInstance, errors:errors)]
-            return
-        }
-
-        authorInstance.save flush:true
-        publisherInstance.save flush:true
-        bookInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'book.label', default: 'Create Book, Author and Publisher'), bookInstance.id])
-                render  view: 'showEverything', model:[cmd:new CreateEverythingCommand(bookInstance:bookInstance, authorInstance:authorInstance,publisherInstance: publisherInstance)]
-            }
-            '*' { respond new CreateEverythingCommand(bookInstance:bookInstance, authorInstance: authorInstance,publisherInstance: publisherInstance), [view: 'showEverything', status: CREATED] }
-        }
+        respond cmd, model:[cmd:cmd]
     }
 
     def saveEverythingCommand(CreateEverythingCommand cmd) {
@@ -122,13 +71,19 @@ class BookController {
 
         if (!cmd.authorInstance.save (flush:true) ){
             cmd.authorInstance.errors.allErrors.each {println it }
+            def errors = cmd.authorInstance.errors
+            render view:'createEverythingCommand',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
+            return
         }
 
         if(!cmd.publisherInstance.save (flush:true) ){
             cmd.publisherInstance.errors.allErrors.each { println it }
+            def errors = cmd.publisherInstance.errors
+            render view:'createEverythingCommand',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
+            return
         }
 
-        cmd.bookInstance.authors = [cmd.authorInstance]
+        cmd.bookInstance.addToAuthors( cmd.authorInstance )
         cmd.authorInstance.addToBooks(cmd.bookInstance)
         cmd.bookInstance.publisher = cmd.publisherInstance
         cmd.bookInstance.clearErrors() //book has already been validated bc it is used as a command object, so need to clear errors before re-validating
@@ -136,7 +91,7 @@ class BookController {
 
         if (cmd.bookInstance.hasErrors()) {
             def errors = cmd.bookInstance.errors
-            render view:'createEverything',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
+            render view:'createEverythingCommand',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
             return
         }
 

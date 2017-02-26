@@ -6,8 +6,9 @@ class Book {
     Date dateOfPublication
     String isbn
     Integer price //stored as an integer, to make the math easier; will need to be formatted properly
+    Publisher publisher
 
-    static belongsTo = [authors:Author, publisher:Publisher]
+    static belongsTo = [Author, Publisher]
     static hasMany = [authors: Author]
 
     static namedQueries = {

@@ -7,9 +7,9 @@ class CreateEverythingCommand implements grails.validation.Validateable {
     Publisher publisherInstance
 
     static constraints = {
-        bookInstance nullable: false, validator: { value, obj -> value.validate()}
-        authorInstance nullable: false, validator: { value, obj -> value.validate()}
-        publisherInstance nullable: true, validator: { value, obj -> value.validate()}
+        bookInstance nullable: false, validator: { value, obj -> value != null && value.validate()}
+        authorInstance nullable: false, validator: { value, obj -> value != null && value.validate()}
+        publisherInstance nullable: false, validator: { value, obj -> value != null && value.validate()}
     }
 
 }

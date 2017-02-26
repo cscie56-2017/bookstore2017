@@ -7,12 +7,20 @@ import spock.lang.*
 import static org.springframework.http.HttpStatus.NOT_FOUND
 
 @TestFor(BookController)
-@Mock(Book)
+@Mock([Book,Author,Publisher])
 class BookControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
         params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0]
+    }
+
+    def populateValidCommandParams(params) {
+        assert params != null
+        params << [bookInstance:[title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0],
+                authorInstance:[firstName:'firstName',lastName:'lastName',birthDate:new Date()-1],
+                publisherInstance:[name:"name",dateEstablished:new Date()-2, type:"Trade"]]
+
     }
 
     void "Test the index action returns the correct model"() {
@@ -31,6 +39,16 @@ class BookControllerSpec extends Specification {
 
         then:"The model is correctly created"
             model.book!= null
+    }
+
+
+    void "Test the createEverythingCommand action returns the correct model"() {
+        when:"The create action is executed"
+        controller.createEverythingCommand()
+
+        then:"The model is correctly created"
+        model.cmd!= null
+        model.cmd instanceof CreateEverythingCommand
     }
 
     void "Test that saving null fails" () {
@@ -65,6 +83,65 @@ class BookControllerSpec extends Specification {
             response.redirectedUrl == '/book/show/1'
             controller.flash.message != null
             Book.count() == 1
+    }
+
+    void "Test that saveEverythingCommand null fails" () {
+        when:"The save action is executed with null"
+            request.method = 'POST'
+            controller.saveEverythingCommand(new CreateEverythingCommand())
+        then:
+            response.status == 404
+    }
+
+
+    void "test the saveEverythingCommand action correctly persists an instance" () {
+        when:"The saveEverythingCommand action is executed with an invalid instance"
+            request.contentType = FORM_CONTENT_TYPE
+            request.method = 'POST'
+            CreateEverythingCommand cmd = new CreateEverythingCommand( bookInstance:new Book(),
+                    authorInstance : new Author(),
+                    publisherInstance :new Publisher())
+            cmd.validate()
+            controller.saveEverythingCommand(cmd)
+
+        then:"The create view is rendered again with the correct model"
+            model.cmd!= null
+            view == '/book/createEverythingCommand'
+
+        when: "Only a valid author is supplied"
+            response.reset()
+            cmd = new CreateEverythingCommand( bookInstance:new Book(),
+                    authorInstance : new Author(firstName:'firstName',lastName:'lastName',birthDate:new Date()-1),
+                    publisherInstance :new Publisher())
+            cmd.validate()
+            controller.saveEverythingCommand(cmd)
+        then:"The createEverythingCommand view is rendered again with the correct model"
+            model.cmd!= null
+            view == '/book/createEverythingCommand'
+
+        when: "Only a valid author and a valid publisher is supplied"
+            response.reset()
+            cmd = new CreateEverythingCommand( bookInstance:new Book(),
+                    authorInstance : new Author(firstName:'firstName',lastName:'lastName',birthDate:new Date()-1),
+                    publisherInstance :new Publisher(name:"name",dateEstablished:new Date()-2, type:"Trade"))
+            cmd.validate()
+            controller.saveEverythingCommand(cmd)
+        then:"The createEverythingCommand view is rendered again with the correct model"
+            model.cmd!= null
+            view == '/book/createEverythingCommand'
+
+
+        when:"The saveEverythingCommand action is executed with a valid instance"
+            response.reset()
+            populateValidCommandParams(params)
+            cmd = new CreateEverythingCommand(params)
+            controller.saveEverythingCommand(cmd)
+
+        then:"A redirect is issued to the show action"
+            response.redirectedUrl == '/book/show/1'
+            controller.flash.message != null
+            Book.count() == 1
+
     }
 
     void "Test that the show action returns the correct model"() {
