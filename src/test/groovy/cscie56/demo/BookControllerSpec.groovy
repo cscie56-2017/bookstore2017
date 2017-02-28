@@ -10,14 +10,21 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 @Mock([Book,Author,Publisher])
 class BookControllerSpec extends Specification {
 
+    BookService bookService
+
+    def setup() {
+        bookService = new BookService()
+        controller.bookService = bookService
+    }
+
     def populateValidParams(params) {
         assert params != null
-        params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0]
+        params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror']
     }
 
     def populateValidCommandParams(params) {
         assert params != null
-        params << [bookInstance:[title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0],
+        params << [bookInstance:[title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror'],
                 authorInstance:[firstName:'firstName',lastName:'lastName',birthDate:new Date()-1],
                 publisherInstance:[name:"name",dateEstablished:new Date()-2, type:"Trade"]]
 
@@ -162,9 +169,9 @@ class BookControllerSpec extends Specification {
 
     void "Test that the findBooksByYear returns only the anticipated results" () {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:0)
+            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:0,genre: 'Horror')
             b1.save(flush:true)
-            Book b2 = new Book(title:'title',dateOfPublication: new Date() -365, isbn: "1234567891", authors: [new Author()], publisher: new Publisher(),price:0)
+            Book b2 = new Book(title:'title',dateOfPublication: new Date() -365, isbn: "1234567891", authors: [new Author()], publisher: new Publisher(),price:0,genre: 'Horror')
             b2.save()
             controller.findBooksByYear(2017)
         then:
