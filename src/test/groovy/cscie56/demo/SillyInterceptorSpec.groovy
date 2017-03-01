@@ -33,5 +33,8 @@ class SillyInterceptorSpec extends Specification {
             if (interceptor?.flash?.message) {
                 interceptor?.badJokes?.contains(interceptor.flash.message)
             }
+
+        expect:
+            interceptor.after()
     }
 }

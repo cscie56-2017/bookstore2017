@@ -70,4 +70,11 @@ class BookSpec extends Specification {
         then:
             b1.toString() == "title (2017)"
     }
+
+    void "test priceFormatted()" () {
+        when:
+            Book b1 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2017'), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0)
+        then:
+            b1.priceFormatted == "\$0.00"
+    }
 }
