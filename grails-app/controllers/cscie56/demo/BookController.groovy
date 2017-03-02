@@ -124,6 +124,8 @@ class BookController {
             return
         }
 
+        bookService.setPriceByGenre(book)
+
         if (book.hasErrors()) {
             transactionStatus.setRollbackOnly()
             respond book.errors, view:'edit'
