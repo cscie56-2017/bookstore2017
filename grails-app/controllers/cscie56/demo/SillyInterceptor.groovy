@@ -15,7 +15,7 @@ class SillyInterceptor {
     }
 
     boolean before() {
-        flash.message = badJokes.get(new Random().nextInt(10))
+        flash.message = badJokes.get(new Random().nextInt(badJokes.size()))
         true
     }
 
