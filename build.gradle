@@ -7,8 +7,13 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.11.6"
         classpath "org.grails.plugins:hibernate5:6.0.6"
+//        classpath "net.saliman:gradle-cobertura-plugin:2.3.0"
     }
 }
+
+//plugins {
+//    id "net.saliman.cobertura" version "2.3.0"
+//}
 
 version "0.1"
 group "bookstore"
@@ -19,6 +24,10 @@ apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
+//apply plugin: "net.saliman.cobertura"
+apply plugin: "jacoco"
+
+
 
 repositories {
     mavenLocal()
@@ -49,10 +58,12 @@ dependencies {
     profile "org.grails.profiles:web"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.11.6"
     runtime "com.h2database:h2"
+    runtime 'mysql:mysql-connector-java:5.1.19'
     testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails.plugins:geb"
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+
 }
 
 bootRun {

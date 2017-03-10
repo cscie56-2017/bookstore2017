@@ -30,4 +30,20 @@ class BookService {
         }
     }
 
+    def setupSaveEverythingAtOnce(CreateEverythingCommand cmd) {
+
+        cmd.bookInstance.addToAuthors( cmd.authorInstance )
+        cmd.authorInstance.addToBooks(cmd.bookInstance)
+        cmd.bookInstance.publisher = cmd.publisherInstance
+        // set price if missing, before checking for errors
+        setPriceByGenre(cmd.bookInstance)
+
+        cmd.clearErrors()
+        cmd.validate()
+    }
+
+    def saveEverythingAtOnce(CreateEverythingCommand cmd) {
+        return  cmd.authorInstance.save (flush:true) && cmd.publisherInstance.save (flush:true)  && cmd.bookInstance.save (flush:true)
+    }
+
 }

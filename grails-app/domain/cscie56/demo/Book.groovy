@@ -23,7 +23,7 @@ class Book {
                 }
             }
         }
-        price min:0
+        price min:1
         genre inList: ['Horror', 'Science Fiction', 'Mystery', 'Biography', 'Textbook', 'Satire', 'Drama', 'Romance', 'Poetry', 'Art']
     }
 

@@ -25,10 +25,10 @@ class BookSpec extends Specification {
 
     void "test isbn is unique"() {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror')
+            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:1,genre: 'Horror')
             b1.addToAuthors(new Author())
             b1.save(flush:true)
-            Book b2 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror')
+            Book b2 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:1,genre: 'Horror')
             b2.addToAuthors(new Author())
             b2.save()
         then:
@@ -40,7 +40,8 @@ class BookSpec extends Specification {
     void "test publication date not before author birthdate" () {
         when:
             Author a = new Author(firstName: 'Stephen', lastName: 'King', birthDate: Date.parse("MM/dd/yyyy","9/21/1947"))
-            Book b = new Book(title:title,dateOfPublication: Date.parse("MM/dd/yyyy",dateString), authors: [a], isbn:isbn, publisher: new Publisher(), price:0,genre: 'Horror')
+            Book b = new Book(title:title,dateOfPublication: Date.parse("MM/dd/yyyy",dateString), isbn:isbn, publisher: new Publisher(), price:1,genre: 'Horror')
+            b.addToAuthors(a)
 
         then:
             b.validate() == result
@@ -53,8 +54,8 @@ class BookSpec extends Specification {
 
     void "test findAllBooksByYear" () {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2017'), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror')
-            Book b2 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2016'), isbn: "1234567891", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror')
+            Book b1 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2017'), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:01,genre: 'Horror')
+            Book b2 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2016'), isbn: "1234567891", authors: [new Author()], publisher: new Publisher(), price:01,genre: 'Horror')
             b1.save(flush:true)
             b2.save(flush:true)
         then:
@@ -66,15 +67,15 @@ class BookSpec extends Specification {
 
     void "test toString()" () {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2017'), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0)
+            Book b1 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2017'), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:1)
         then:
             b1.toString() == "title (2017)"
     }
 
     void "test priceFormatted()" () {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2017'), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0)
+            Book b1 = new Book(title:'title',dateOfPublication: Date.parse('yyyy','2017'), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:1)
         then:
-            b1.priceFormatted == "\$0.00"
+            b1.priceFormatted == "\$0.01"
     }
 }

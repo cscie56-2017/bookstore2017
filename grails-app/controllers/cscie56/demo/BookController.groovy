@@ -67,6 +67,7 @@ class BookController {
         respond cmd, model:[cmd:cmd]
     }
 
+    @Transactional
     def saveEverythingCommand(CreateEverythingCommand cmd) {
 
         if (cmd.bookInstance == null || cmd.authorInstance == null || cmd.publisherInstance == null) {
@@ -74,42 +75,28 @@ class BookController {
             return
         }
 
-        if (!cmd.authorInstance.save (flush:true) ){
-            cmd.authorInstance.errors.allErrors.each {println it }
-            def errors = cmd.authorInstance.errors
-            render view:'createEverythingCommand',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
+        bookService.setupSaveEverythingAtOnce(cmd)
+
+        if(cmd.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            render view:'createEverythingCommand',model:[cmd:cmd]
             return
         }
 
-        if(!cmd.publisherInstance.save (flush:true) ){
-            cmd.publisherInstance.errors.allErrors.each { println it }
-            def errors = cmd.publisherInstance.errors
-            render view:'createEverythingCommand',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
-            return
-        }
+       // bookService.saveEverythingAtOnce(cmd)
+        cmd.authorInstance.save (flush:true)
+        cmd.publisherInstance.save (flush:true)
+        cmd.bookInstance.save (flush:true)
 
-        cmd.bookInstance.addToAuthors( cmd.authorInstance )
-        cmd.authorInstance.addToBooks(cmd.bookInstance)
-        cmd.bookInstance.publisher = cmd.publisherInstance
-        // set price if missing, before checking for errors
-        bookService.setPriceByGenre(cmd.bookInstance)
-
-        if (cmd.bookInstance.hasErrors()) {
-            def errors = cmd.bookInstance.errors
-            render view:'createEverythingCommand',model:[cmd:new CreateEverythingCommand(bookInstance:cmd.bookInstance, authorInstance:cmd.authorInstance,publisherInstance: cmd.publisherInstance, errors:errors)]
-            return
-        }
-
-        cmd.authorInstance.save flush:true
-        cmd.publisherInstance.save flush:true
-        cmd.bookInstance.save flush:true
 
         request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'everything.created.message', args: [cmd.bookInstance.title, cmd.authorInstance.fullName, cmd.publisherInstance.name, cmd.bookInstance.dateOfPublication.format('M/d/yyyy')])
-                redirect cmd.bookInstance
+                form multipartForm {
+                    flash.message = message(code: 'everything.created.message', args: [cmd.bookInstance.title, cmd.authorInstance.fullName, cmd.publisherInstance.name, cmd.bookInstance?.dateOfPublication?.format('M/d/yyyy')])
+                    redirect cmd.bookInstance
+                }
+                '*' { respond cmd.bookInstance, [status: CREATED] }
             }
-            '*' { respond cmd.bookInstance, [status: CREATED] }        }
+
     }
 
     def edit(Book book) {

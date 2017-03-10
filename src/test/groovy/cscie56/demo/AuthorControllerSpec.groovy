@@ -30,6 +30,14 @@ class AuthorControllerSpec extends Specification {
             model.author!= null
     }
 
+    void "Test that saving null fails" () {
+        when:"The save action is executed with null"
+            request.method = 'POST'
+            controller.save(null)
+        then:
+            response.status == 404
+    }
+
     void "Test the save action correctly persists an instance"() {
 
         when:"The save action is executed with an invalid instance"

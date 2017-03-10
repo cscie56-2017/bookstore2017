@@ -19,12 +19,12 @@ class BookControllerSpec extends Specification {
 
     def populateValidParams(params) {
         assert params != null
-        params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror']
+        params << [title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:1,genre: 'Horror']
     }
 
     def populateValidCommandParams(params) {
         assert params != null
-        params << [bookInstance:[title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:0,genre: 'Horror'],
+        params << [bookInstance:[title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(), price:1,genre: 'Horror'],
                 authorInstance:[firstName:'firstName',lastName:'lastName',birthDate:new Date()-1],
                 publisherInstance:[name:"name",dateEstablished:new Date()-2, type:"Trade"]]
 
@@ -126,7 +126,29 @@ class BookControllerSpec extends Specification {
             model.cmd!= null
             view == '/book/createEverythingCommand'
 
-        when: "Only a valid author and a valid publisher is supplied"
+        when: "Only a valid publisher is supplied"
+            response.reset()
+            cmd = new CreateEverythingCommand( bookInstance:new Book(),
+                    authorInstance : new Author(),
+                    publisherInstance :new Publisher(name:"name",dateEstablished:new Date()-2, type:"Trade"))
+            cmd.validate()
+            controller.saveEverythingCommand(cmd)
+        then:"The createEverythingCommand view is rendered again with the correct model"
+            model.cmd!= null
+            view == '/book/createEverythingCommand'
+
+        when: "Only a valid book is supplied"
+            response.reset()
+            cmd = new CreateEverythingCommand( bookInstance:new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:1,genre: 'Horror'),
+                    authorInstance : new Author(),
+                    publisherInstance :new Publisher())
+            cmd.validate()
+            controller.saveEverythingCommand(cmd)
+        then:"The createEverythingCommand view is rendered again with the correct model"
+            model.cmd!= null
+            view == '/book/createEverythingCommand'
+
+        when: "Only a valid author and a valid publisher are supplied"
             response.reset()
             cmd = new CreateEverythingCommand( bookInstance:new Book(),
                     authorInstance : new Author(firstName:'firstName',lastName:'lastName',birthDate:new Date()-1),
@@ -137,6 +159,27 @@ class BookControllerSpec extends Specification {
             model.cmd!= null
             view == '/book/createEverythingCommand'
 
+        when: "Only a valid book and a valid publisher are supplied"
+            response.reset()
+            cmd = new CreateEverythingCommand( bookInstance:new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:1,genre: 'Horror'),
+                    authorInstance : new Author(),
+                    publisherInstance :new Publisher(name:"name",dateEstablished:new Date()-2, type:"Trade"))
+            cmd.validate()
+            controller.saveEverythingCommand(cmd)
+        then:"The createEverythingCommand view is rendered again with the correct model"
+            model.cmd!= null
+            view == '/book/createEverythingCommand'
+
+        when: "Only a valid book and a valid author are supplied"
+            response.reset()
+            cmd = new CreateEverythingCommand( bookInstance:new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:1,genre: 'Horror'),
+                    authorInstance : new Author(firstName:'firstName',lastName:'lastName',birthDate:new Date()-1),
+                    publisherInstance :new Publisher())
+            cmd.validate()
+            controller.saveEverythingCommand(cmd)
+        then:"The createEverythingCommand view is rendered again with the correct model"
+            model.cmd!= null
+            view == '/book/createEverythingCommand'
 
         when:"The saveEverythingCommand action is executed with a valid instance"
             response.reset()
@@ -169,9 +212,9 @@ class BookControllerSpec extends Specification {
 
     void "Test that the findBooksByYear returns only the anticipated results" () {
         when:
-            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:0,genre: 'Horror')
+            Book b1 = new Book(title:'title',dateOfPublication: new Date(), isbn: "1234567890", authors: [new Author()], publisher: new Publisher(),price:1,genre: 'Horror')
             b1.save(flush:true)
-            Book b2 = new Book(title:'title',dateOfPublication: new Date() -365, isbn: "1234567891", authors: [new Author()], publisher: new Publisher(),price:0,genre: 'Horror')
+            Book b2 = new Book(title:'title',dateOfPublication: new Date() -365, isbn: "1234567891", authors: [new Author()], publisher: new Publisher(),price:1,genre: 'Horror')
             b2.save()
             controller.findBooksByYear(2017)
         then:
