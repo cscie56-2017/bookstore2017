@@ -1,7 +1,9 @@
 package cscie56.demo
 
+import grails.rest.*
 import java.text.DecimalFormat
 
+@Resource(formats=['json', 'xml'])
 class Book {
 
     String title

@@ -1,5 +1,8 @@
 package cscie56.demo
 
+import grails.rest.Resource
+
+@Resource(formats=['json', 'xml'])
 class Publisher {
 
     String name

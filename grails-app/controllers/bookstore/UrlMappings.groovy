@@ -8,6 +8,12 @@ class UrlMappings {
                 // apply constraints here
             }
         }
+        "/books"(resources:"book") {
+            "/publishers"(resources:"publisher")
+            "/authors"(resources:"author")
+        }
+        "/authors"(resources:"author")
+    	"/publishers"(resources:"publisher")
 
         "/"(view:"/index")
         "500"(view:'/error')

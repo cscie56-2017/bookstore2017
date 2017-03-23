@@ -1,5 +1,8 @@
 package cscie56.demo
 
+import grails.rest.*
+
+@Resource(formats=['json', 'xml'])
 class Author {
 
     String firstName
