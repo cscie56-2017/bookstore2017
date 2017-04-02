@@ -3,16 +3,23 @@ package bookstore
 import cscie56.demo.Author
 import cscie56.demo.Book
 import cscie56.demo.Publisher
+import cscie56.demo.Role
+import cscie56.demo.User
+import cscie56.demo.UserRole
 
 class BootStrap {
 
     def init = { servletContext ->
+        println "******************* bookstore.BootStrap.groovy!!!! ***************"
+
         environments {
             development {
                 setupData()
+                setupUsersAndRoles()
             }
             test {
                 setupData()
+                setupUsersAndRoles()
             }
             production {
                 // do nothing
@@ -20,6 +27,22 @@ class BootStrap {
         }
     }
     def destroy = {
+    }
+
+    def setupUsersAndRoles(){
+        User admin = new User(username: 'admin',password: 'supersecret')
+        saveObject(admin)
+        User user = new User(username: 'user', password: 'secret')
+        saveObject(user)
+
+        Role adminRole = new Role(authority: Role.ROLE_ADMIN)
+        saveObject(adminRole)
+        Role userRole = new Role(authority: Role.ROLE_USER)
+        saveObject(userRole)
+
+        UserRole.create(admin,adminRole)
+        UserRole.create(admin,userRole)
+        UserRole.create(user,userRole)
     }
 
     def setupData(){

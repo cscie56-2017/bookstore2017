@@ -2,26 +2,31 @@ package cscie56.demo
 
 import grails.converters.JSON
 import grails.converters.XML
+import grails.plugin.springsecurity.annotation.Secured
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
+@Secured([Role.ROLE_ADMIN])
 class BookController {
 
     BookService bookService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Book.listOrderByDateOfPublication(params), model:[bookCount: Book.count()]
     }
 
+    @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
     def show(Book book) {
         respond book
     }
 
+    @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
     def findBooksByYear(Integer year) {
         render view:'index', model:[bookList:Book.findAllBooksByPublicationYear(year).list()]
         //render Book.findAllBooksByPublicationYear(year).list() as XML

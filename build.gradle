@@ -64,7 +64,14 @@ dependencies {
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
+
+
+    compile project(":generateprice")
+    compile project(":shoppingcart")
+
 }
+
+
 
 bootRun {
     jvmArgs('-Dspring.output.ansi.enabled=always')

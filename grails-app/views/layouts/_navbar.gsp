@@ -1,4 +1,4 @@
-<div class="navbar navbar-default navbar-static-top" role="navigation">
+<nav class="navbar navbar-default navbar-static-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -14,13 +14,15 @@
             </a>
         </div>
         <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav">
                 <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
+                    <g:if test="${!c?.logicalPropertyName?.contains("log")}">
                     <li class="controller">
                         <g:link controller="${c.logicalPropertyName}">${c.logicalPropertyName}s</g:link>
                     </li>
+                    </g:if>
                 </g:each>
             </ul>
         </div>
     </div>
-</div>
+</nav>

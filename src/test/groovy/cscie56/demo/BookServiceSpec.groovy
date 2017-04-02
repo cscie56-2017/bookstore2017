@@ -12,7 +12,12 @@ import spock.lang.Unroll
 @Mock(Book)
 class BookServiceSpec extends Specification {
 
+    PriceGeneratorService priceGeneratorService
+
+
     def setup() {
+        priceGeneratorService = new PriceGeneratorService()
+        service.priceGeneratorService = priceGeneratorService
     }
 
     def cleanup() {

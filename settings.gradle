@@ -1,2 +1,9 @@
 rootProject.name = 'bookstore'
 
+include 'generateprice'
+include 'shoppingcart'
+
+project(':generateprice').projectDir = new File('/Users/extension/Documents/e56-2017/bookstore/generateprice')
+project(':shoppingcart').projectDir = new File('/Users/extension/Documents/e56-2017/bookstore/shoppingcart')
+
+
