@@ -15,13 +15,11 @@
 <body>
 
     <g:render template="/layouts/navbar" />
+
     <div id="auth_div" class="pull-right" style="padding-right:3px;">
         <sec:ifLoggedIn>
-            Logged in as <sec:username/><g:form controller="logout" type="POST"><input class="btn btn-link" type="submit" value="Logout" /></g:form>
+
         </sec:ifLoggedIn>
-        <sec:ifNotLoggedIn>
-            <g:link controller="login" action="index">Login</g:link>
-        </sec:ifNotLoggedIn>
     </div>
 
     <g:layoutBody/>

@@ -17,13 +17,25 @@ class BookController {
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
         respond Book.listOrderByDateOfPublication(params), model:[bookCount: Book.count()]
     }
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
     def show(Book book) {
-        respond book
+        withFormat {
+            html { respond book }
+            json { render book as JSON }
+            xml { render book as XML }
+        }
+    }
+
+    @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
+    def _show(Book book) {
+        withFormat {
+            html { respond book }
+            json { render book as JSON }
+            xml { render book as XML }
+        }
     }
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
