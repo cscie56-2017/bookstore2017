@@ -1,7 +1,7 @@
 
 <ol class="property-list book">
     <li class="fieldcontain">
-        <span id="authors-label" class="property-label">Authors</span>
+        <span id="authors-label" class="property-label">Author${book?.authors?.size()==1?'':'s'}</span>
         <div class="property-value" aria-labelledby="authors-label" id="book-authors">
             <g:if test="${book?.authors?.size()}">
                 <ul style="list-style-type: none;">
