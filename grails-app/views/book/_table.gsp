@@ -53,36 +53,4 @@
         </div>
     </div>
 </div>
-<script>
-
-$('#bookModal').on('show.bs.modal', function (event) {
-    console.log('bookModal fired!');
-  var button = $(event.relatedTarget), // Button that triggered the modal
-      bookId = button.data('book-id'), // Extract info from data-* attributes
-      bookTitle = button.html();
-  console.log(bookTitle);
-  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-  var modal = $(this);
-    var request = $.ajax({
-        url:'/book/_show/'+bookId, // add +'?format=json' to get JSON response
-        method:'GET'
-    });
-    request.done(function(data){
-        console.log(data);
-        $('#bookModalContent').html(data);
-        // the following would be used if instead you were calling for json and processing the individual data members
-       // $('#book-isbn').html(data.isbn);
-       // $('#book-dateOfPublication').html(data.dateOfPublication);
-       // $('#book-authors').html(data.authors);
-       // $('#book-publisher').html(data.publisher);
-       // $('#book-price').html(data.price);
-       // $('#book-genre').html(data.genre);
-    });
-    request.fail(function(jqXHR,textStatus) {
-        $('#results-div').html('<p>Could not retrieve details for id = ' + bookId +'<p>');
-    });
-$('#bookModalLabel').html(bookTitle);
-
-});
-</script>
+<asset:javascript src="book/bookTable.js"></asset:javascript>

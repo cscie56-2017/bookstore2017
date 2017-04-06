@@ -33,8 +33,13 @@ class BookController {
     def _show(Book book) {
         withFormat {
             html { respond book }
-            json { render book as JSON }
-            xml { render book as XML }
+            json { render ( [authors:book?.authors*.fullName.join(', ')
+                             ,price:book?.priceFormatted
+                             ,publisher:book?.publisher?.name
+                             ,isbn:book?.isbn
+                             ,dateOfPublication:book?.dateOfPublication.format('MM/dd/yyyy')
+                             ,genre:book?.genre]  as JSON ) }
+            xml { render (book as XML) }
         }
     }
 
