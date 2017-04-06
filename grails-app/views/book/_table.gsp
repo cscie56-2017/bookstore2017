@@ -1,5 +1,5 @@
 <asset:javascript src="application.js"></asset:javascript>
-<table id="bookTable">
+<table id="bookTable" class="table  table-striped table-hover">
     <thead>
         <tr>
             <th>Title</th>
@@ -17,7 +17,7 @@
                     <a href="#" data-book-id="${book.id}" data-toggle="modal" data-target="#bookModal">${book.title}</a>
                 </td>
                 <td>
-                    <ul>
+                    <ul style="list-style-type: none;">
                     <g:each in="${book.authors}" var="author">
                         <li>
                             ${author.fullName}
