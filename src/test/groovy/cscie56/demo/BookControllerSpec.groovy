@@ -1,5 +1,6 @@
 package cscie56.demo
 
+import cscsie56.demo.plugin.PriceGeneratorService
 import grails.test.mixin.*
 import org.apache.http.HttpStatus
 import spock.lang.*
@@ -11,9 +12,12 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 class BookControllerSpec extends Specification {
 
     BookService bookService
+    PriceGeneratorService priceGeneratorService
 
     def setup() {
+        priceGeneratorService = new PriceGeneratorService()
         bookService = new BookService()
+        bookService.priceGeneratorService = priceGeneratorService
         controller.bookService = bookService
     }
 

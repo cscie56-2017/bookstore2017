@@ -11,6 +11,9 @@ class Book {
     Publisher publisher
     String genre
 
+    Date dateCreated
+    Date lastUpdated
+
     static belongsTo = [Author, Publisher]
     static hasMany = [authors: Author]
 
