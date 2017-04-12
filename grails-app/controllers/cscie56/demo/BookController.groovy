@@ -22,11 +22,7 @@ class BookController {
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
     def show(Book book) {
-        withFormat {
-            html { respond book }
-            json { render book as JSON }
-            xml { render book as XML }
-        }
+        respond book
     }
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
@@ -41,6 +37,11 @@ class BookController {
                              ,genre:book?.genre]  as JSON ) }
             xml { render (book as XML) }
         }
+    }
+
+    @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
+    def _book(Book book) {
+        respond book
     }
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])

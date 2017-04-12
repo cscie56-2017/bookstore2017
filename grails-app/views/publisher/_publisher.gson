@@ -1,0 +1,13 @@
+import cscie56.demo.Publisher
+
+model {
+    Publisher publisher
+}
+
+json {
+    id publisher?.id
+    name publisher?.name
+    dateEstablished publisher?.dateEstablished
+    books g.render(template:'/author/bookSimple', collection: publisher?.books ?: [], var:'book')
+    authors g.render(template:'/book/authorSimple', collection: publisher?.books*.authors?.unique() ?: [], var:'author')
+}

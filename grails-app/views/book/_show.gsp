@@ -14,6 +14,11 @@
     </li>
 
     <li class="fieldcontain">
+        <span id="description-label" class="property-label">Description</span>
+        <div class="property-value" aria-labelledby="description-label" id="book-description">${book?.description}</div>
+    </li>
+
+    <li class="fieldcontain">
         <span id="dateOfPublication-label" class="property-label">Date Of Publication</span>
         <div class="property-value" aria-labelledby="dateOfPublication-label" id="book-dateOfPublication">
             <g:formatDate date="${book?.dateOfPublication}" />
@@ -41,4 +46,15 @@
         <span id="isbn-label" class="property-label">Isbn</span>
         <div class="property-value" aria-labelledby="isbn-label" id="book-isbn">${book?.isbn}</div>
     </li>
+
 </ol>
+
+<sec:ifAnyGranted roles="ROLE_ADMIN">
+    <form id="book-delete-form" action="/book/delete/${book?.id}" method="post" >
+        <input type="hidden" name="_method" value="DELETE" id="_method" />
+        <fieldset class="buttons">
+            <a id="book-edit-link" href="/book/edit/${book?.id}" class="edit">Edit</a>
+            <input class="delete" type="submit" value="Delete" onclick="return confirm('Are you sure?');" />
+        </fieldset>
+    </form>
+</sec:ifAnyGranted>

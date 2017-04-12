@@ -1,0 +1,18 @@
+import cscie56.demo.Book
+
+model {
+    Book book
+}
+
+json {
+    id book?.id
+    title book?.title
+    price book?.priceFormatted
+    authors g.render(template: "authorSimple", collection: book?.authors ?: [], var: "author" )
+    publisher book?.publisher?.name
+    publisherId book?.publisher?.id
+    isbn book?.isbn
+    dateOfPublication book?.dateOfPublication.format('M/d/yyyy')
+    genre book?.genre
+    description book?.description
+}

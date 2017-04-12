@@ -26,7 +26,7 @@
                     </ul>
                 </td>
                 <td>${book.publisher}</td>
-                <td><g:formatDate date="${book.dateOfPublication}" /></td>
+                <td><span style="display: none;"><g:formatDate date="${book.dateOfPublication}" format="yyyyMMdd"/></span><g:formatDate date="${book.dateOfPublication}" /></td>
                 <td>${book.isbn}</td>
                 <td>${book.priceFormatted}</td>
             </tr>

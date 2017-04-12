@@ -10,6 +10,7 @@ class Book {
     Integer price //stored as an integer, to make the math easier; will need to be formatted properly
     Publisher publisher
     String genre
+    String description
 
     Date dateCreated
     Date lastUpdated
@@ -19,6 +20,7 @@ class Book {
 
     static constraints = {
         isbn unique: true
+        description nullable: true, maxSize: 4096
         dateOfPublication validator: {val, obj, errors ->
             obj?.authors?.each { author ->
                 if (val < author?.birthDate) {
@@ -28,7 +30,7 @@ class Book {
         }
         authors minSize: 1
         price min:1
-        genre inList: ['Horror', 'Science Fiction', 'Mystery', 'Biography', 'Textbook', 'Satire', 'Drama', 'Romance', 'Poetry', 'Art']
+        genre inList: ['Horror', 'Science Fiction', 'Historical Fiction','Mystery', 'Biography', 'Textbook', 'Satire', 'Drama', 'Romance', 'Poetry', 'Art']
     }
 
     static namedQueries = {
