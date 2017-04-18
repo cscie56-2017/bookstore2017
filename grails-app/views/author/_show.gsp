@@ -27,9 +27,9 @@
     <li class="fieldcontain">
         <span id="authors-label" class="property-label">Book${author?.books?.size()==1?'':'s'}</span>
         <div class="property-value" aria-labelledby="authors-label" id="author-books">
-            <g:if test="${author?.books?.size()}">
+            <g:if test="${bookList?.size()}">
                 <ul style="list-style-type: none;">
-                    <g:each in="${author?.books}" var="book">
+                    <g:each in="${bookList}" var="book">
                         <li><g:link controller="book" action="show" id="${book.id}">${book.title} (<g:formatDate date="${book.dateOfPublication}" format="yyyy"/>)</g:link> </li>
                     </g:each>
                 </ul>

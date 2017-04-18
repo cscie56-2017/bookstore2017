@@ -22,8 +22,8 @@ class BookIntSpec extends Specification {
             !b.validate()
     }
 
-    void "test that there are 8 books in the db" () {
+    void "test that there are 19 books in the db" () {
         expect:
-            Book.count() == 8
+            Book.count() == 19
     }
 }

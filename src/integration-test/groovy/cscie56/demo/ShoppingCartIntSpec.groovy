@@ -30,7 +30,7 @@ class ShoppingCartIntSpec extends Specification {
 
         then:
             cart.grandTotal == expectedSum
-            cart.validate()
+            cart.lineItems.size() == allBooks.size()
 
         when:
             Book anotherBook = Book.get(1)
@@ -38,6 +38,7 @@ class ShoppingCartIntSpec extends Specification {
 
         then:
             cart.grandTotal == expectedSum + anotherBook.price
-            cart.validate()
+            cart.lineItems.size() == allBooks.size() + 1
+
     }
 }

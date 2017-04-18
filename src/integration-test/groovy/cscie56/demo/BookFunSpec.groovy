@@ -13,7 +13,8 @@ import geb.spock.*
 @Rollback
 class BookFunSpec extends GebSpec {
 
-    def setup() {
+    def setupSpec() {
+        this.baseUrl = "http://localhost:${serverPort}/"
     }
 
     def cleanup() {
@@ -21,16 +22,16 @@ class BookFunSpec extends GebSpec {
 
     void "test index"(){
         when:"index is called"
-            go "/book/index"
+            go "book/"
         then:"book list is shown"
-            title == "Book List"
+            title
     }
 
     void "test book 1"() {
         when:"The 1st book is queried"
-            go '/book/show/1'
+            go 'book/show/1'
         then:
-            title.contains("Show Book")
+            title ==~ /Show Book.*/
     }
 
     /*
@@ -41,7 +42,7 @@ class BookFunSpec extends GebSpec {
     void "test book #bookId : #bookTitle"() {
 
         when:"The show book page is queried"
-            go "/book/show/${bookId}"
+            go "book/show/${bookId}"
             Book book = Book.get(bookId)
 
         then: "Page title should include book title"
@@ -61,10 +62,11 @@ class BookFunSpec extends GebSpec {
             4       | "The Dead Zone"
     }
 
+    @Unroll
     void "test book #bookId : #bookTitle in French"() {
 
         when:"The show book page is queried"
-            go "/book/show/${bookId}?lang=fr"
+            go "book/show/${bookId}?lang=fr"
             def book = Book.get(bookId)
 
         then: "Page title should include book title"

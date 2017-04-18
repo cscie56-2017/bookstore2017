@@ -12,12 +12,14 @@ import grails.transaction.Transactional
 class BookController {
 
     BookService bookService
+    def springSecurityService
+
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])
     def index(Integer max) {
-        respond Book.listOrderByDateOfPublication(params), model:[bookCount: Book.count()]
+        respond Book.list()
     }
 
     @Secured([Role.ROLE_USER,Role.ROLE_ADMIN,Role.ROLE_ANONYMOUS])

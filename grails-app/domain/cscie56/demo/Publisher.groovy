@@ -6,11 +6,15 @@ class Publisher {
     Date dateEstablished
     String type
 
-    static hasMany = [books:Book]
-
     static constraints = {
         dateEstablished max: new Date()
         type inList: ['Trade','Textbook','Educational','Academic','Bargain','Self']
+    }
+
+    static transients = ['books']
+
+    List<Book> getBooks(){
+        Book.findAllByPublisher(this) as List
     }
 
     String toString(){

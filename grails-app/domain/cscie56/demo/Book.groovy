@@ -14,8 +14,10 @@ class Book {
 
     Date dateCreated
     Date lastUpdated
+   // String createdBy //user ID
+   // String updatedBy //user ID
 
-    static belongsTo = [Author, Publisher]
+    static belongsTo = [Author]
     static hasMany = [authors: Author]
 
     static constraints = {

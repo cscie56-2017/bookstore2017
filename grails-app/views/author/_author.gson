@@ -1,0 +1,17 @@
+
+import cscie56.demo.Author
+
+model {
+    Author author
+}
+
+json {
+    id author?.id
+    firstName author?.firstName
+    middleName author?.middleName
+    lastName author?.lastName
+    fullName author?.fullName
+    birthDate author?.birthDate.format('M/d/yyyy')
+    books  g.render(template: "bookSimple", collection: author?.books?.sort {it.dateOfPublication} ?: [], var: "book" )
+    pubishers g.render(template: "publisherSimple", collection: author?.books*.publisher.unique() ?: [], var: "publisher" )
+}

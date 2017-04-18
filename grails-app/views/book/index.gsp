@@ -25,7 +25,6 @@
             <g:render template="table" model="[bookList:bookList]" />
 
         </div>
-        <asset:javascript src="application.js"></asset:javascript>
         <script src="//cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
         <script>
             $('#bookTable').DataTable();

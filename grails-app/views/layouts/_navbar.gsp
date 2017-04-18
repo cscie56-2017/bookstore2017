@@ -34,13 +34,13 @@
                         <a>Logged in as <sec:username/></a>
                     </li>
                     <li><a>
-                        <g:form controller="logout" type="POST"><input class="btn btn-link" style="color: white !important;" type="submit" value="logout" /></g:form>
+                        <g:form controller="logout" type="POST"><input id="logoutLink" class="btn btn-link" style="color: white !important;" type="submit" value="logout" /></g:form>
                         </a>
                     </li>
                 </sec:ifLoggedIn>
                 <sec:ifNotLoggedIn>
                     <li>
-                    <g:link controller="login" action="index">login</g:link>
+                    <g:link id="loginLink" controller="login" action="index">login</g:link>
                     </li>
                 </sec:ifNotLoggedIn>
 
