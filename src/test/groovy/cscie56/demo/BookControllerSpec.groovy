@@ -41,7 +41,6 @@ class BookControllerSpec extends Specification {
 
         then:"The model is correct"
             !model.bookList
-            model.bookCount == 0
     }
 
     void "Test the create action returns the correct model"() {
