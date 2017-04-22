@@ -7,13 +7,8 @@ buildscript {
         classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:2.11.6"
         classpath "org.grails.plugins:hibernate5:6.0.6"
-//        classpath "net.saliman:gradle-cobertura-plugin:2.3.0"
     }
 }
-
-//plugins {
-//    id "net.saliman.cobertura" version "2.3.0"
-//}
 
 version "0.1"
 group "bookstore"
@@ -24,17 +19,11 @@ apply plugin:"war"
 apply plugin:"org.grails.grails-web"
 apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
-//apply plugin: "net.saliman.cobertura"
-apply plugin: "jacoco"
-// This is all thats nessisarry if you want to use the default version
-// of codenarc and the `config/codenarc/condenarc.xml`
 apply plugin: 'codenarc'
 
-// Use the latest version
 codenarc {
-    toolVersion = '0.25.2'
+    toolVersion = '0.27.0'
 }
-
 
 repositories {
     mavenLocal()
@@ -74,14 +63,12 @@ dependencies {
 
     testCompile "org.grails:grails-plugin-testing"
     testCompile "org.grails.plugins:geb"
-    //testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
-    //testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
 
-    testCompile "org.gebish:geb-core:${project.gebVersion}"
+    testCompile "org.gebish:geb-core:${gebVersion}"
 
-    testRuntime "org.seleniumhq.selenium:selenium-support:2.52.0"
-    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:2.52.0"
-    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:2.52.0"
+    testRuntime "org.seleniumhq.selenium:selenium-support:${seleniumVersion}"
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver:${seleniumVersion}"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver:${seleniumVersion}"
 
     // For downloading browser-specific drivers that browsers like Chrome and IE require
     testCompile("io.github.bonigarcia:webdrivermanager:1.5.0") {
