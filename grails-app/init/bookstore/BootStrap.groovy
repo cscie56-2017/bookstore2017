@@ -6,6 +6,9 @@ import cscie56.demo.Publisher
 import cscie56.demo.Role
 import cscie56.demo.User
 import cscie56.demo.UserRole
+import groovy.sql.Sql
+
+import java.util.logging.Level
 
 class BootStrap {
 
@@ -14,6 +17,7 @@ class BootStrap {
 
         environments {
             development {
+                Sql.LOG.level = Level.FINE
                 setupData()
                 setupUsersAndRoles()
             }

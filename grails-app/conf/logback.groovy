@@ -35,7 +35,9 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
     logger("grails.app.controllers.cscie56.demo", INFO, ['FULL_STACKTRACE'])
     logger("grails.app.domain.cscie56.demo", INFO, ['FULL_STACKTRACE'])
     logger("grails.app.services.cscie56.demo", INFO, ['FULL_STACKTRACE'])
-
+    logger('org.hibernate.SQL', DEBUG, ['FULL_STACKTRACE'])
+    logger('groovy.sql.Sql', DEBUG, ['FULL_STACKTRACE'])
+    logger("org.hibernate.type.descriptor.sql.BasicBinder", TRACE, ['FULL_STACKTRACE'])
     root(ERROR, ['STDOUT', 'FULL_STACKTRACE'])
 }
 else {
