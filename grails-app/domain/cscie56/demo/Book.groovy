@@ -1,7 +1,10 @@
 package cscie56.demo
 
+import groovy.transform.EqualsAndHashCode
+
 import java.text.DecimalFormat
 
+@EqualsAndHashCode(excludes='authors')
 class Book {
 
     String title

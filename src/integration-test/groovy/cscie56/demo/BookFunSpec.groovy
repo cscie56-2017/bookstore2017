@@ -1,10 +1,10 @@
 package cscie56.demo
 
 import grails.test.mixin.integration.Integration
-import grails.transaction.*
+import grails.transaction.Rollback
 
-import spock.lang.*
-import geb.spock.*
+import spock.lang.Unroll
+import geb.spock.GebSpec
 
 /**
  * See http://www.gebish.org/manual/current/ for more instructions
@@ -17,8 +17,6 @@ class BookFunSpec extends GebSpec {
         this.baseUrl = "http://localhost:${serverPort}/"
     }
 
-    def cleanup() {
-    }
 
     void "test index"(){
         when:"index is called"

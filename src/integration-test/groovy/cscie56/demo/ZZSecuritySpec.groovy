@@ -57,7 +57,5 @@ class ZZSecuritySpec extends GebSpec {
         via cscie56.demo.pages.book.EditPage
         then:
         at cscie56.demo.pages.LoginPage
-
-
     }
 }

@@ -1,15 +1,10 @@
 package cscie56.demo
 
 import cscie56.demo.pages.LoginPage
-import cscie56.demo.pages.book.CreatePage
 import cscie56.demo.pages.book.IndexPage
-import cscie56.demo.pages.book.ShowPage
-import geb.spock.GebReportingSpec
 import geb.spock.GebSpec
 import grails.test.mixin.integration.Integration
-import spock.lang.*
 
-//@Stepwise
 @Integration
 class BookCRUDSpec extends GebSpec {
 
@@ -23,9 +18,6 @@ class BookCRUDSpec extends GebSpec {
 
     }
 
-    def cleanupSpec() {
-
-    }
 
     def "warmup"(){
         when:

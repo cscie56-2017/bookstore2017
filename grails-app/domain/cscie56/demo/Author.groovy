@@ -1,5 +1,8 @@
 package cscie56.demo
 
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode(excludes = 'books')
 class Author {
 
     String firstName

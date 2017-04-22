@@ -20,9 +20,6 @@ class BookServiceSpec extends Specification {
         service.priceGeneratorService = priceGeneratorService
     }
 
-    def cleanup() {
-    }
-
     @Unroll
     def "testing setPriceByGenre: genre = #genre, expected price = #price" () {
         when:

@@ -1,5 +1,8 @@
 package cscie56.demo
 
+import groovy.transform.EqualsAndHashCode
+
+@EqualsAndHashCode
 class Publisher {
 
     String name

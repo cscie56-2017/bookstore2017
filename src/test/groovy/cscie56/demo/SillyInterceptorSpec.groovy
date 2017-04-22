@@ -10,13 +10,6 @@ import spock.lang.Specification
 @TestFor(SillyInterceptor)
 class SillyInterceptorSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-
-    }
-
     void "Test silly interceptor matching"() {
         when:"A request matches the interceptor"
             withRequest(controller:"book")

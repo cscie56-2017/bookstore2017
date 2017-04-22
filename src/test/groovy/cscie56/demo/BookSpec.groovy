@@ -9,12 +9,6 @@ import spock.lang.Unroll
 @Mock([Author,Publisher])
 class BookSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
     void "test validation of nullable objects" () {
         when:
             Book b1 = new Book()

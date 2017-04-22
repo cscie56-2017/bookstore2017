@@ -25,6 +25,7 @@ class BookRow extends Module {
         cellText { cell(it).text() }
         cellHref{ cell(it).find('a') }
         cellHrefText{ cellHref(it).text() }
+
         title { cellHrefText(0) }
         authors { cellText(1)}
         publisher { cellText(2) }

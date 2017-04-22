@@ -1,6 +1,5 @@
 package cscie56.demo.pages
 
-import geb.Browser
 import geb.Page
 
 class ScaffoldPage extends Page {

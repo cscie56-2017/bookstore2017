@@ -1,7 +1,6 @@
 package cscie56.demo
 
 import java.text.DecimalFormat
-import java.text.NumberFormat
 
 class FormatTagLib {
     //static defaultEncodeAs = [taglib:'html']

@@ -21,7 +21,4 @@ class SillyInterceptor {
 
     boolean after() { true }
 
-    void afterView() {
-        // no-op
-    }
 }

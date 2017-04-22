@@ -10,12 +10,6 @@ import spock.lang.Unroll
 @TestFor(Publisher)
 class PublisherSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
     @Unroll
     void "test constraints name:#name, dateEstablished:#dateEstablished, type:#type - should validate? #result"() {
 

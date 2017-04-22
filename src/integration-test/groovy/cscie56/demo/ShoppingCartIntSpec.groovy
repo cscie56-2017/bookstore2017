@@ -2,20 +2,14 @@ package cscie56.demo
 
 
 import grails.test.mixin.integration.Integration
-import grails.transaction.*
-import spock.lang.*
+import grails.transaction.Rollback
+import spock.lang.Specification
 
 @Integration
 @Rollback
 class ShoppingCartIntSpec extends Specification {
 
     def shoppingCartService
-
-    def setup() {
-    }
-
-    def cleanup() {
-    }
 
     void "test shopping cart addition"() {
        when:

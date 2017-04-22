@@ -26,7 +26,14 @@ apply plugin:"org.grails.grails-gsp"
 apply plugin:"asset-pipeline"
 //apply plugin: "net.saliman.cobertura"
 apply plugin: "jacoco"
+// This is all thats nessisarry if you want to use the default version
+// of codenarc and the `config/codenarc/condenarc.xml`
+apply plugin: 'codenarc'
 
+// Use the latest version
+codenarc {
+    toolVersion = '0.25.2'
+}
 
 
 repositories {

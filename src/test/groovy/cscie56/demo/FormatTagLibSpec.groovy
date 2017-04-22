@@ -9,12 +9,6 @@ import spock.lang.Specification
 @TestFor(FormatTagLib)
 class FormatTagLibSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
     void "test copyright tag" () {
         expect:
         applyTemplate('<bookstore:copyright by="President and Fellows of Harvard University" to="2016" from="2012" />') == '<p>Copyright &copy; 2012-2016 President and Fellows of Harvard University</p>'

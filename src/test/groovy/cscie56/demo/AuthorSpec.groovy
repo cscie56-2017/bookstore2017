@@ -11,12 +11,6 @@ import spock.lang.Specification
 @Mock(Book)
 class AuthorSpec extends Specification {
 
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
     void "test create Author with books"() {
         when:
             Author a = new Author()

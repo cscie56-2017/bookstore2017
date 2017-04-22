@@ -1,10 +1,8 @@
 package cscie56.demo
 
 import cscie56.demo.pages.author.IndexPage
-import geb.spock.GebReportingSpec
 import geb.spock.GebSpec
 import grails.test.mixin.integration.Integration
-import spock.lang.*
 
 @Integration
 class AuthorCRUDSpec extends GebSpec {
