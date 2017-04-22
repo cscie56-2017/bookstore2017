@@ -32,6 +32,10 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
         }
     }
     logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
+    logger("grails.app.controllers.cscie56.demo", INFO, ['FULL_STACKTRACE'])
+    logger("grails.app.domain.cscie56.demo", INFO, ['FULL_STACKTRACE'])
+    logger("grails.app.services.cscie56.demo", INFO, ['FULL_STACKTRACE'])
+
     root(ERROR, ['STDOUT', 'FULL_STACKTRACE'])
 }
 else {
