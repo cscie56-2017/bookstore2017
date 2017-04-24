@@ -21,6 +21,13 @@ class BootStrap {
                 setupData()
                 setupUsersAndRoles()
             }
+            devdb {
+                Sql.LOG.level = Level.FINE
+                if (Book.count() == 0) {
+                    setupData()
+                    setupUsersAndRoles()
+                }
+            }
             test {
                 setupData()
                 setupUsersAndRoles()
